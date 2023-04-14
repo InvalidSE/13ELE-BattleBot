@@ -17,7 +17,7 @@ const int BLUETOOTH_RX = 7;
 // Setup bluetooth serial
 SoftwareSerial bluetooth(BLUETOOTH_TX, BLUETOOTH_RX);
 char incomingData[20];
-int bearing, amplitude;
+int bearing, amplitude, left, right;
 
 
 void setup() {
@@ -55,37 +55,21 @@ void loop() {
     // 0 degrees is at the right of the joystick
 
     if(bearing >= 0 && bearing <= 90) {
-      // Move forward
-      analogWrite(PWMA, amplitude);
-      digitalWrite(AIN1, HIGH);
-      digitalWrite(AIN2, LOW);
-      analogWrite(PWMB, amplitude);
-      digitalWrite(BIN1, HIGH);
-      digitalWrite(BIN2, LOW);
+      // Turn right
+      left = amplitude;
+      right = amplitude - (amplitude * (bearing / 90.0));
     } else if(bearing > 90 && bearing <= 180) {
-      // Move left
-      analogWrite(PWMA, amplitude);
-      digitalWrite(AIN1, LOW);
-      digitalWrite(AIN2, HIGH);
-      analogWrite(PWMB, amplitude);
-      digitalWrite(BIN1, HIGH);
-      digitalWrite(BIN2, LOW);
+      // Turn left
+      left = amplitude - (amplitude * ((bearing - 90) / 90.0));
+      right = amplitude;
     } else if(bearing > 180 && bearing <= 270) {
-      // Move backward
-      analogWrite(PWMA, amplitude);
-      digitalWrite(AIN1, LOW);
-      digitalWrite(AIN2, HIGH);
-      analogWrite(PWMB, amplitude);
-      digitalWrite(BIN1, LOW);
-      digitalWrite(BIN2, HIGH);
+      // Turn left
+      left = amplitude - (amplitude * ((bearing - 180) / 90.0));
+      right = amplitude;
     } else if(bearing > 270 && bearing <= 360) {
-      // Move right
-      analogWrite(PWMA, amplitude);
-      digitalWrite(AIN1, HIGH);
-      digitalWrite(AIN2, LOW);
-      analogWrite(PWMB, amplitude);
-      digitalWrite(BIN1, LOW);
-      digitalWrite(BIN2, HIGH);
+      // Turn right
+      left = amplitude;
+      right = amplitude - (amplitude * ((bearing - 270) / 90.0));
     }
   }
 }
