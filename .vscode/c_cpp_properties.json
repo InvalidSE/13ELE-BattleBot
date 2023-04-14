@@ -8,10 +8,10 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/taine/Documents/Code/13ELE BattleBot/include",
-                "C:/Users/taine/Documents/Code/13ELE BattleBot/src",
+                "C:/Users/taine/Documents/Code/13ELE-BattleBot/include",
+                "C:/Users/taine/Documents/Code/13ELE-BattleBot/src",
                 "C:/Users/taine/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                "C:/Users/taine/Documents/Code/13ELE BattleBot/.pio/libdeps/nanoatmega328new/ArduinoBlue/src",
+                "C:/Users/taine/Documents/Code/13ELE-BattleBot/.pio/libdeps/nanoatmega328new/ArduinoBlue/src",
                 "C:/Users/taine/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/taine/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
                 "C:/Users/taine/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
@@ -23,10 +23,10 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/taine/Documents/Code/13ELE BattleBot/include",
-                    "C:/Users/taine/Documents/Code/13ELE BattleBot/src",
+                    "C:/Users/taine/Documents/Code/13ELE-BattleBot/include",
+                    "C:/Users/taine/Documents/Code/13ELE-BattleBot/src",
                     "C:/Users/taine/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                    "C:/Users/taine/Documents/Code/13ELE BattleBot/.pio/libdeps/nanoatmega328new/ArduinoBlue/src",
+                    "C:/Users/taine/Documents/Code/13ELE-BattleBot/.pio/libdeps/nanoatmega328new/ArduinoBlue/src",
                     "C:/Users/taine/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/taine/.platformio/packages/framework-arduino-avr/variants/eightanaloginputs",
                     "C:/Users/taine/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
