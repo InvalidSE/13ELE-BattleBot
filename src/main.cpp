@@ -58,18 +58,53 @@ void loop() {
       // Turn right
       left = amplitude;
       right = amplitude - (amplitude * (bearing / 90.0));
+      // Set both motors to forward
+      digitalWrite(AIN1, HIGH);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, HIGH);
+      digitalWrite(BIN2, LOW);
     } else if(bearing > 90 && bearing <= 180) {
       // Turn left
       left = amplitude - (amplitude * ((bearing - 90) / 90.0));
       right = amplitude;
+      // Set both motors to forward
+      digitalWrite(AIN1, HIGH);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, HIGH);
+      digitalWrite(BIN2, LOW);
     } else if(bearing > 180 && bearing <= 270) {
       // Turn left
       left = amplitude - (amplitude * ((bearing - 180) / 90.0));
       right = amplitude;
+      // Set both motors to reverse
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, HIGH);
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, HIGH);
     } else if(bearing > 270 && bearing <= 360) {
       // Turn right
       left = amplitude;
       right = amplitude - (amplitude * ((bearing - 270) / 90.0));
+      // Set both motors to reverse
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, HIGH);
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, HIGH);
     }
+
+    if(amplitude == 0) {
+      // Stop motors
+      left = 0;
+      right = 0;
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, LOW);
+    }
+
+    // Set motor speeds
+    analogWrite(PWMA, left);
+    analogWrite(PWMB, right);
+
   }
 }
