@@ -19,6 +19,24 @@ SoftwareSerial bluetooth(BLUETOOTH_TX, BLUETOOTH_RX);
 char incomingData[20];
 int bearing, amplitude, left, right;
 
+float convert(float angle) {
+  // Convert angle to a value between -1 and 1
+  if(angle < 0) {
+    angle += 360;
+  }
+  if(0 <= angle && angle < 90) {
+    return 1;
+  } else if(180 <= angle && angle < 270) {
+    return -1;
+  } else if(90 <= angle && angle < 180) {
+    return 1 - (angle - 90) / 45;
+  } else if(270 <= angle && angle <= 360) {
+    return -1 + (angle - 270) / 45;
+  } else {
+    return 0;
+  }
+}
+
 
 void setup() {
   Serial.begin(9600);
@@ -53,58 +71,52 @@ void loop() {
   // Move motors
   if (amplitude > 0) {
     // 0 degrees is at the right of the joystick
+    // 90 degrees is at the top of the joystick
 
-    if(bearing >= 0 && bearing <= 90) {
-      // Turn right
-      left = amplitude;
-      right = amplitude - (amplitude * (bearing / 90.0));
-      // Set both motors to forward
+    // at 0 degrees, left motor is at full speed and right motor is at full reverse
+    // at 90 degrees, both motors are at full speed
+    // at 180 degrees, left motor is at full reverse and right motor is at full speed
+    // at 270 degrees, both motors are at full reverse
+
+    // Calculate motor speeds from -100 to 100
+    left = 2.55 * amplitude * convert(bearing);
+    right = 2.55 * amplitude * convert(bearing - 90);
+
+    // Set motor directions
+    if (left > 0) {
       digitalWrite(AIN1, HIGH);
       digitalWrite(AIN2, LOW);
-      digitalWrite(BIN1, HIGH);
-      digitalWrite(BIN2, LOW);
-    } else if(bearing > 90 && bearing <= 180) {
-      // Turn left
-      left = amplitude - (amplitude * ((bearing - 90) / 90.0));
-      right = amplitude;
-      // Set both motors to forward
-      digitalWrite(AIN1, HIGH);
-      digitalWrite(AIN2, LOW);
-      digitalWrite(BIN1, HIGH);
-      digitalWrite(BIN2, LOW);
-    } else if(bearing > 180 && bearing <= 270) {
-      // Turn left
-      left = amplitude - (amplitude * ((bearing - 180) / 90.0));
-      right = amplitude;
-      // Set both motors to reverse
+    } else {
       digitalWrite(AIN1, LOW);
       digitalWrite(AIN2, HIGH);
-      digitalWrite(BIN1, LOW);
-      digitalWrite(BIN2, HIGH);
-    } else if(bearing > 270 && bearing <= 360) {
-      // Turn right
-      left = amplitude;
-      right = amplitude - (amplitude * ((bearing - 270) / 90.0));
-      // Set both motors to reverse
-      digitalWrite(AIN1, LOW);
-      digitalWrite(AIN2, HIGH);
-      digitalWrite(BIN1, LOW);
-      digitalWrite(BIN2, HIGH);
     }
 
-    if(amplitude == 0) {
-      // Stop motors
-      left = 0;
-      right = 0;
-      digitalWrite(AIN1, LOW);
-      digitalWrite(AIN2, LOW);
-      digitalWrite(BIN1, LOW);
+    if (right > 0) {
+      digitalWrite(BIN1, HIGH);
       digitalWrite(BIN2, LOW);
+    } else {
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, HIGH);
     }
 
     // Set motor speeds
     analogWrite(PWMA, left);
     analogWrite(PWMB, right);
 
+    // Write motor speeds to serial
+    Serial.print("Left: ");
+    Serial.println(left);
+    Serial.print("Right: ");
+    Serial.println(right);
+
+  } else {
+    // Stop motors
+    left = 0;
+    right = 0;
+    digitalWrite(AIN1, LOW);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, LOW);
+    digitalWrite(BIN2, LOW);
   }
 }
+
